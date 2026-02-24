@@ -5,41 +5,49 @@ namespace GestionUtilisateurs.Services
 {
     public class UserService : IUserService
     {
+        // Le service dépend du repository pour effectuer les opérations métier
         private readonly IUserRepository _userRepository;
 
+        // Injection de dépendance via le constructeur
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public User CreateUser(User user)
+        // Méthode pour créer un Utilisateur
+        public void CreateUser(User user)
         {
-            return _userRepository.CreateUser(user);
+            _userRepository.CreateUser(user);
         }
 
+        // Méthode pour supprimer un Utilisateur
         public void DeleteUser(long id)
         {
             _userRepository.DeleteUser(id);
         }
 
+        // Méthode pour lire tous les Utilisateurs
         public List<User> GetAllUsers()
         {
             return _userRepository.GetAllUsers();
         }
 
-        public User? GetUserByEmail(string email)
+        // Méthode pour lire un utilisateur grace à son Email
+        public User? FindUserByEmail(string email)
         {
             return _userRepository.GetUserByEmail(email);
         }
 
-        public User? GetUserById(long id)
+        // Méthode pour lire un utilisateur grace à son Id
+        public User? FindUserById(long id)
         {
             return _userRepository.GetUserById(id);
         }
 
-        public User? UpdateUser(User user)
+        // Méthode pour mettre à jour un utilisateur
+        public void UpdateUser(User user)
         {
-            return _userRepository.UpdateUser(user);
+           _userRepository.UpdateUser(user);
         }
     }
 }

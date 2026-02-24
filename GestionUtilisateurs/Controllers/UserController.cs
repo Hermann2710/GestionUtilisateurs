@@ -5,13 +5,16 @@ namespace GestionUtilisateurs.Controllers
 {
     public class UserController
     {
+        // Le controller dépend du service pour effectuer les opérations métier
         private readonly IUserService _userService;
 
+        // Injection de dépendance via le constructeur
         public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
+        // Méthode pour afficher le menu du tutoriel
         public void AfficherTutoriel()
         {
             Console.WriteLine("=== MENU GESTION UTILISATEURS ===");
@@ -23,7 +26,9 @@ namespace GestionUtilisateurs.Controllers
             Console.WriteLine("=================================");
         }
 
-        public void AfficherTousLesUtilisateurs()
+        // Méthode pour afficher tous les utilisateurs
+        public void 
+            AfficherTousLesUtilisateurs()
         {
             var users = _userService.GetAllUsers();
             if (users.Count == 0)
@@ -38,12 +43,13 @@ namespace GestionUtilisateurs.Controllers
             }
         }
 
+        // Méthode pour ajouter un nouvel utilisateur tout en vérifiant si son email n'est pas déjà utilisé
         public void AjouterUtilisateur()
         {
             Console.Write("Email : ");
             string email = Console.ReadLine() ?? "";
 
-            if (_userService.GetUserByEmail(email) != null)
+            if (_userService.FindUserByEmail(email) != null)
             {
                 Console.WriteLine("Erreur : Cet email est déjà utilisé par un autre compte.");
                 return;
@@ -59,12 +65,13 @@ namespace GestionUtilisateurs.Controllers
             Console.WriteLine("Utilisateur créé avec succès.");
         }
 
+        // Méthode pour modifier un utilisateur via son ID tout en vérifiant si son email est unique
         public void ModifierUtilisateur()
         {
             Console.Write("ID de l'utilisateur à modifier : ");
             if (long.TryParse(Console.ReadLine(), out long id))
             {
-                var existingUser = _userService.GetUserById(id);
+                var existingUser = _userService.FindUserById(id);
                 if (existingUser == null)
                 {
                     Console.WriteLine("Erreur : Aucun utilisateur trouvé avec cet ID.");
@@ -76,7 +83,7 @@ namespace GestionUtilisateurs.Controllers
 
                 if (!string.IsNullOrEmpty(newEmail) && newEmail != existingUser.Email)
                 {
-                    if (_userService.GetUserByEmail(newEmail) != null)
+                    if (_userService.FindUserByEmail(newEmail) != null)
                     {
                         Console.WriteLine("Erreur : Ce nouvel email est déjà pris.");
                         return;
@@ -95,12 +102,13 @@ namespace GestionUtilisateurs.Controllers
             }
         }
 
+        // Methode pour supprimer un utilisateur via son ID
         public void SupprimerUtilisateur()
         {
             Console.Write("ID de l'utilisateur à supprimer : ");
             if (long.TryParse(Console.ReadLine(), out long id))
             {
-                var user = _userService.GetUserById(id);
+                var user = _userService.FindUserById(id);
 
                 if (user != null)
                 {

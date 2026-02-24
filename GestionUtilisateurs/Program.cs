@@ -14,12 +14,14 @@ namespace GestionUtilisateurs
             IUserService userService = new UserService(repository);
             UserController controller = new UserController(userService);
 
+            // Variable pour gérer la boucle du menu
             bool continuer = true;
 
             controller.AfficherTutoriel();
 
             while (continuer)
             {
+                // Affichage du menu et lecture de l'option choisie
                 Console.WriteLine("\nChoisissez une option (1-5) ou 0 pour voir le tuto :");
                 string choix = Console.ReadLine() ?? "";
 
